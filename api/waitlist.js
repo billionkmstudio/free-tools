@@ -102,7 +102,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         from: 'Billdocket Waitlist <noreply@billionstudio.co.uk>',
-        to: ['hello@billionstudio.co.uk'],  // ← 改做你想收 notification 嘅 email
+        to: ['info@billionstudio.co.uk'],  // ← 改做你想收 notification 嘅 email
         subject: `🎉 New Waitlist Signup: ${email}`,
         html: emailHtml,
         reply_to: email,  // 可以直接 reply 俾用戶
