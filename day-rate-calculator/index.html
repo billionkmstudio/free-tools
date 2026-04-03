@@ -1,1 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freelancer Day Rate Calculator — Free Tool by Billion Studio</title>
+<meta name="description" content="Free UK freelancer day rate calculator. Find your true minimum day rate accounting for taxes, pension, business costs and non-billable time. Built for UK freelancers and contractors.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --white: #ffffff;
+    --ink: #0f0e0c;
+    --ink-soft: #5a5650;
+    --border: #e3e0d8;
+    --accent: #c84b2f;
+    --accent-light: #fdf0ed;
+    --accent-dark: #a63a20;
+    --green: #1a7a4a;
+    --green-light: #edf7f2;
+    --amber: #b87a1a;
+    --amber-light: #fdf6e8;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --shadow: 0 2px 16px rgba(15,14,12,0.07);
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    background: var(--ink); color: #fff; padding: 10px 0;
+    text-align: center; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: 0.04em;
+  }
+  .topbar a { color: #f0c060; text-decoration: none; font-weight: 500; }
+
+  /* ── Nav ── */
+  nav {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 12px 0; position: sticky; top: 0; z-index: 100;
+  }
+  .nav-inner {
+    max-width: 1040px; margin: 0 auto; padding: 0 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--ink);
+  }
+  .nav-logo {
+    width: 36px; height: 36px; border-radius: 8px; overflow: hidden;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo img { width: 100%; height: 100%; object-fit: cover; }
+  .nav-brand-text {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 17px; color: var(--ink);
+  }
+  .nav-tag {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink-soft);
+    background: var(--bg); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border);
+  }
+
+  /* ── Hero ── */
+  .hero {
+    max-width: 1040px; margin: 0 auto; padding: 56px 24px 40px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--accent); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-label::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--accent); }
+  .hero h1 {
+    font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800; line-height: 1.1; color: var(--ink); margin-bottom: 14px;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { font-size: 16px; color: var(--ink-soft); max-width: 580px; line-height: 1.7; }
+
+  /* ── Main layout ── */
+  .main {
+    max-width: 1040px; margin: 0 auto; padding: 0 24px 80px;
+    display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start;
+  }
+
+  /* ── Stepper ── */
+  .stepper {
+    display: flex; margin-bottom: 20px; background: var(--white);
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    animation: fadeUp 0.5s 0.05s ease both;
+  }
+  .step-tab {
+    flex: 1; padding: 11px 6px; text-align: center;
+    border: none; background: transparent; font-family: 'DM Mono', monospace;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft);
+    border-right: 1px solid var(--border); transition: background 0.2s, color 0.2s;
+  }
+  .step-tab:last-child { border-right: none; }
+  .step-tab .sn { display: block; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; margin-bottom: 1px; }
+  .step-tab.active { background: var(--ink); color: #fff; }
+  .step-tab.done { background: var(--green-light); color: var(--green); }
+
+  /* ── Card ── */
+  .calc-card {
+    background: var(--white); border-radius: 16px; border: 1px solid var(--border);
+    box-shadow: var(--shadow); overflow: hidden; animation: fadeUp 0.5s 0.1s ease both;
+  }
+  .calc-header {
+    background: var(--ink); padding: 20px 28px; display: flex; align-items: center; gap: 12px;
+  }
+  .calc-icon {
+    width: 36px; height: 36px; background: var(--accent); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+  }
+  .calc-header h2 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: #fff; }
+  .calc-header p  { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+  .calc-body { padding: 28px; display: flex; flex-direction: column; gap: 18px; }
+
+  /* ── Panels ── */
+  .panel { display: none; flex-direction: column; gap: 16px; }
+  .panel.active { display: flex; animation: fadeUp 0.3s ease both; }
+  .panel-title {
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink);
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Fields ── */
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 12px; font-weight: 500; font-family: 'DM Mono', monospace;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft);
+  }
+  .req { color: var(--accent); }
+  .input-wrap { position: relative; }
+  .pfx {
+    position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+    font-family: 'DM Mono', monospace; font-size: 14px; color: var(--ink-soft); pointer-events: none;
+  }
+  input[type="number"], select {
+    width: 100%; padding: 11px 13px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--ink);
+    background: var(--bg); outline: none; -webkit-appearance: none; appearance: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input.pl { padding-left: 28px; }
+  input:focus, select:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,75,47,0.1); background: var(--white);
+  }
+  .hint { font-size: 11px; color: var(--ink-soft); line-height: 1.4; }
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* ── Range ── */
+  .rng-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .rng-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .rng-lbl { font-family: 'DM Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-soft); }
+  .rng-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--accent); }
+  input[type="range"] {
+    width: 100%; height: 6px; border-radius: 3px; -webkit-appearance: none; appearance: none;
+    background: linear-gradient(to right, var(--accent) var(--v,30%), var(--border) var(--v,30%));
+    outline: none; cursor: pointer; border: none; padding: 0;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 2px 6px rgba(200,75,47,0.35); cursor: pointer;
+  }
+  .rng-ticks { display: flex; justify-content: space-between; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--ink-soft); }
+
+  /* ── Callouts ── */
+  .callout { border-radius: 8px; padding: 11px 14px; font-size: 12px; line-height: 1.5; }
+  .callout.amber { background: var(--amber-light); border: 1px solid #f0d090; color: var(--amber); }
+  .callout.blue  { background: var(--blue-light);  border: 1px solid #bfdbfe; color: var(--blue); }
+  .callout.green { background: var(--green-light); border: 1px solid #b8e8cc; color: var(--green); }
+
+  /* ── Expense rows ── */
+  .exp-list { display: flex; flex-direction: column; gap: 8px; }
+  .exp-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px;
+  }
+  .exp-ico  { font-size: 16px; flex-shrink: 0; }
+  .exp-info { flex: 1; }
+  .exp-name { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .exp-sub  { font-size: 11px; color: var(--ink-soft); }
+  .exp-iw   { position: relative; flex-shrink: 0; }
+  .exp-pfx  {
+    position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+    font-family: 'DM Mono', monospace; font-size: 13px; color: var(--ink-soft); pointer-events: none;
+  }
+  .exp-inp {
+    width: 96px; padding: 7px 8px 7px 20px;
+    border: 1.5px solid var(--border); border-radius: 6px;
+    font-family: 'DM Mono', monospace; font-size: 13px; color: var(--ink);
+    background: var(--white); outline: none; -webkit-appearance: none; appearance: none;
+    transition: border-color 0.2s;
+  }
+  .exp-inp:focus { border-color: var(--accent); }
+
+  /* ── b-rows ── */
+  .brow {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px; border-radius: 8px; background: var(--bg); border: 1px solid transparent;
+  }
+  .brow.red   { background: var(--accent-light); border-color: #f0c4b8; }
+  .brow.green { background: var(--green-light);  border-color: #b8e8cc; }
+  .brow.amber { background: var(--amber-light);  border-color: #f0d090; }
+  .blbl { font-size: 13px; color: var(--ink-soft); }
+  .bval { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--ink); }
+  .brow.red   .bval { color: var(--accent); }
+  .brow.green .bval { color: var(--green); }
+  .brow.amber .bval { color: var(--amber); }
+
+  /* ── Nav buttons ── */
+  .step-nav { display: flex; gap: 10px; padding-top: 4px; }
+  .btn-back {
+    padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px;
+    background: transparent; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    color: var(--ink-soft); cursor: pointer; transition: border-color 0.2s, color 0.2s; white-space: nowrap;
+  }
+  .btn-back:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-next {
+    flex: 1; padding: 13px 18px; border: none; border-radius: 10px;
+    background: var(--accent); color: white; font-family: 'Syne', sans-serif; font-size: 14px;
+    font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-next:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-next:active { transform: none; }
+  .btn-next.g { background: var(--green); }
+  .btn-next.g:hover { background: #155e3b; }
+
+  /* ── Results ── */
+  .res-wrap { display: flex; flex-direction: column; gap: 14px; }
+
+  .magic-box { background: var(--ink); border-radius: 14px; padding: 26px; text-align: center; }
+  .magic-lbl { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+  .magic-rate { font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 6px; }
+  .magic-rate .cur { font-size: 2rem; vertical-align: top; margin-top: 8px; display: inline-block; }
+  .magic-sub  { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 16px; }
+  .magic-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .pill {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 20px; padding: 6px 14px; font-family: 'DM Mono', monospace;
+    font-size: 12px; color: rgba(255,255,255,0.65);
+  }
+  .pill strong { color: #f0c060; font-weight: 600; }
+
+  .rc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .rc-box { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+  .rc-box .rv { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+  .rc-box .rl { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); margin-top: 4px; }
+  .rc-box.acc .rv { color: var(--accent); }
+  .rc-box.grn .rv { color: var(--green); }
+
+  .equiv-box {
+    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px;
+  }
+  .equiv-ico { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .equiv-txt { font-size: 13px; color: var(--ink-soft); line-height: 1.55; }
+  .equiv-txt strong { color: var(--ink); }
+
+  /* ── Donut ── */
+  .chart-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .chart-ttl { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+  .donut-wrap { position: relative; width: 170px; height: 170px; margin: 0 auto 14px; }
+  .donut-ctr {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    text-align: center; pointer-events: none;
+  }
+  .donut-ctr .dv { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--ink); line-height: 1; }
+  .donut-ctr .dl { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+  .leg { display: flex; flex-direction: column; gap: 7px; }
+  .leg-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-soft); }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .leg-row strong { color: var(--ink); margin-left: auto; font-family: 'DM Mono', monospace; font-size: 11px; }
+
+  /* ── Breakdown ── */
+  .bk-ttl { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .bk-list { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ── Email section ── */
+  .email-section { display: flex; flex-direction: column; gap: 8px; }
+  .email-lbl { font-size: 11px; color: var(--ink-soft); font-family: 'DM Mono', monospace; }
+  .email-row { display: flex; gap: 8px; }
+  .email-inp {
+    flex: 1; padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--bg); color: var(--ink);
+    outline: none; transition: border-color 0.2s;
+  }
+  .email-inp:focus { border-color: var(--accent); background: var(--white); }
+  .email-btn {
+    background: var(--ink); color: white; border: none; padding: 10px 16px; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;
+    white-space: nowrap; transition: background 0.2s; min-width: 70px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .email-btn:hover { background: #333; }
+  .email-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .email-st { font-size: 11px; font-family: 'DM Mono', monospace; text-align: center; min-height: 16px; }
+
+  .recalc {
+    width: 100%; padding: 11px; border: 1.5px solid var(--border); border-radius: 10px;
+    background: transparent; font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--ink-soft); cursor: pointer; text-transform: uppercase; letter-spacing: 0.06em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .recalc:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* ── Sidebar ── */
+  .sidebar { display: flex; flex-direction: column; gap: 20px; animation: fadeUp 0.5s 0.15s ease both; }
+
+  .info-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 22px; box-shadow: var(--shadow); }
+  .info-card h3 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+  .ilist { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .ilist li { font-size: 13px; color: var(--ink-soft); padding-left: 18px; position: relative; line-height: 1.5; }
+  .ilist li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 11px; top: 1px; }
+  .ilist li strong { color: var(--ink); }
+
+  .sg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sb { background: var(--bg); border-radius: 10px; padding: 14px; border: 1px solid var(--border); text-align: center; }
+  .sb .sv { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--ink); }
+  .sb .sl { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); margin-top: 2px; }
+
+  /* ── CTA / Waitlist ── */
+  .cta-card { background: var(--ink); border-radius: 14px; padding: 24px; color: white; }
+  .cta-tag { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #f0c060; margin-bottom: 10px; display: block; }
+  .cta-card h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.3; margin-bottom: 10px; }
+  .cta-card p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 14px; }
+  .wl-form { display: flex; flex-direction: column; gap: 8px; }
+  .wl-inp {
+    padding: 11px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.09); color: white; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; outline: none; transition: background 0.2s;
+  }
+  .wl-inp::placeholder { color: rgba(255,255,255,0.33); }
+  .wl-inp:focus { background: rgba(255,255,255,0.14); }
+  .wl-btn {
+    padding: 11px; border-radius: 8px; border: none; background: #f0c060; color: var(--ink);
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer;
+    transition: opacity 0.2s; display: flex; align-items: center; justify-content: center;
+  }
+  .wl-btn:hover { opacity: 0.88; }
+  .wl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .wl-st { font-size: 11px; color: rgba(255,255,255,0.55); font-family: 'DM Mono', monospace; text-align: center; min-height: 16px; }
+
+  /* ── Footer ── */
+  .site-footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; background: var(--white); }
+  .site-footer p { font-size: 12px; color: var(--ink-soft); font-family: 'DM Mono', monospace; }
+  .site-footer a { color: var(--ink); font-weight: 600; text-decoration: none; }
+  .site-footer a:hover { color: var(--accent); }
+  .disclaimer { max-width: 1040px; margin: 0 auto 32px; padding: 0 24px; }
+  .disclaimer p {
+    font-size: 12px; color: var(--ink-soft); background: var(--amber-light);
+    border: 1px solid #f0d090; border-radius: 8px; padding: 12px 16px; line-height: 1.6;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Spinner ── */
+  .spinner {
+    width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner.dark { border-color: rgba(15,14,12,0.3); border-top-color: var(--ink); }
+
+  /* ── Mobile ── */
+  @media (max-width: 760px) {
+    .hero { padding: 32px 20px 28px; }
+    .hero h1 { font-size: 1.9rem; }
+    .main { grid-template-columns: 1fr; padding: 0 20px 60px; gap: 24px; }
+    .g2 { grid-template-columns: 1fr; }
+    .rc-grid { grid-template-columns: 1fr 1fr; }
+    .magic-rate { font-size: 3rem; }
+    .sg { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  Free Tools by <a href="https://billionstudio.co.uk">Billion Studio</a> &nbsp;·&nbsp; Built for UK Freelancers &amp; Contractors
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="https://billionstudio.co.uk" class="nav-brand">
+      <div class="nav-logo">
+        <img src="/images/logo.png" alt="Billion Studio logo">
+      </div>
+      <span class="nav-brand-text">Billion Studio</span>
+    </a>
+    <span class="nav-tag">free-tools / day-rate-calculator</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Free UK Freelancer Tool</div>
+  <h1>The "True Cost"<br><em>Day Rate Calculator</em></h1>
+  <p>Most freelancers undercharge — because they forget tax, pension, sick days, and the hours spent not billing. Find your real minimum day rate in 3 steps.</p>
+</div>
+
+<div class="main">
+
+  <!-- Calculator column -->
+  <div>
+    <div class="stepper">
+      <div class="step-tab active" id="tab-0"><span class="sn">1</span>Life Goals</div>
+      <div class="step-tab" id="tab-1"><span class="sn">2</span>Business Costs</div>
+      <div class="step-tab" id="tab-2"><span class="sn">3</span>Your Time</div>
+      <div class="step-tab" id="tab-3"><span class="sn">✓</span>Your Rate</div>
+    </div>
+
+    <div class="calc-card">
+      <div class="calc-header">
+        <div class="calc-icon">💷</div>
+        <div>
+          <h2>Day Rate Calculator</h2>
+          <p>3 steps · Under 2 minutes · No sign-up needed</p>
+        </div>
+      </div>
+
+      <div class="calc-body">
+
+        <!-- Step 1 -->
+        <div class="panel active" id="panel-0">
+          <div class="panel-title">Step 1 — Your Life Goals</div>
+
+          <div class="field">
+            <label>Desired annual take-home salary <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="pfx">£</span>
+              <input type="number" id="salary-target" class="pl" placeholder="45,000" min="1000" step="1000">
+            </div>
+            <span class="hint">The net amount you want landing in your bank each year, after tax</span>
+          </div>
+
+          <div class="field">
+            <label>Private pension contribution</label>
+            <div class="rng-wrap">
+              <div class="rng-head">
+                <span class="rng-lbl">% of gross income set aside</span>
+                <span class="rng-val" id="pension-disp">5%</span>
+              </div>
+              <input type="range" id="pension-pct" min="0" max="20" value="5" oninput="syncR(this,'pension-disp','%')">
+              <div class="rng-ticks"><span>0%</span><span>5% (min rec.)</span><span>10%</span><span>20%</span></div>
+            </div>
+            <span class="hint">No employer pension as a freelancer — you fund this entirely yourself</span>
+          </div>
+
+          <div class="field">
+            <label>Tax &amp; NI buffer (set aside from every invoice)</label>
+            <div class="rng-wrap">
+              <div class="rng-head">
+                <span class="rng-lbl">% saved from each invoice</span>
+                <span class="rng-val" id="taxbuf-disp">25%</span>
+              </div>
+              <input type="range" id="tax-buf" min="15" max="40" value="25" oninput="syncR(this,'taxbuf-disp','%')">
+              <div class="rng-ticks"><span>15%</span><span>25% (typical)</span><span>40%</span></div>
+            </div>
+            <span class="hint">Covers Income Tax + National Insurance. Aim for 25–28% at basic rate; 35%+ above £50,270</span>
+          </div>
+
+          <div class="callout blue">
+            💡 <strong>Remember:</strong> As a freelancer you're responsible for both employee and employer NI contributions — your gross income must be significantly higher than your take-home.
+          </div>
+
+          <div class="step-nav">
+            <button class="btn-next" onclick="go(0,1)">Next: Business Costs →</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="panel" id="panel-1">
+          <div class="panel-title">Step 2 — Your Business Overheads</div>
+
+          <div class="callout amber">
+            Enter your estimated annual spend. These costs come straight off your income — they're why your day rate needs to be higher than you think.
+          </div>
+
+          <div class="exp-list">
+            <div class="exp-row">
+              <span class="exp-ico">🛡️</span>
+              <div class="exp-info"><div class="exp-name">Professional Insurance</div><div class="exp-sub">PI, Public Liability, Cyber</div></div>
+              <div class="exp-iw"><span class="exp-pfx">£</span><input type="number" class="exp-inp" id="exp-ins" value="500" min="0"></div>
+            </div>
+            <div class="exp-row">
+              <span class="exp-ico">💻</span>
+              <div class="exp-info"><div class="exp-name">Software &amp; Tools</div><div class="exp-sub">Adobe, Figma, Microsoft 365, Zoom…</div></div>
+              <div class="exp-iw"><span class="exp-pfx">£</span><input type="number" class="exp-inp" id="exp-sw" value="1200" min="0"></div>
+            </div>
+            <div class="exp-row">
+              <span class="exp-ico">📊</span>
+              <div class="exp-info"><div class="exp-name">Accountancy &amp; Legal</div><div class="exp-sub">Annual accountant, contracts</div></div>
+              <div class="exp-iw"><span class="exp-pfx">£</span><input type="number" class="exp-inp" id="exp-acc" value="800" min="0"></div>
+            </div>
+            <div class="exp-row">
+              <span class="exp-ico">📣</span>
+              <div class="exp-info"><div class="exp-name">Marketing &amp; Networking</div><div class="exp-sub">LinkedIn Premium, website hosting, events</div></div>
+              <div class="exp-iw"><span class="exp-pfx">£</span><input type="number" class="exp-inp" id="exp-mkt" value="600" min="0"></div>
+            </div>
+            <div class="exp-row">
+              <span class="exp-ico">🏢</span>
+              <div class="exp-info"><div class="exp-name">Workspace</div><div class="exp-sub">Co-working, home office overheads</div></div>
+              <div class="exp-iw"><span class="exp-pfx">£</span><input type="number" class="exp-inp" id="exp-ws" value="0" min="0"></div>
+            </div>
+            <div class="exp-row">
+              <span class="exp-ico">📦</span>
+              <div class="exp-info"><div class="exp-name">Other Expenses</div><div class="exp-sub">Equipment, training, travel</div></div>
+              <div class="exp-iw"><span class="exp-pfx">£</span><input type="number" class="exp-inp" id="exp-oth" value="0" min="0"></div>
+            </div>
+          </div>
+
+          <div class="brow amber">
+            <span class="blbl">Total annual business costs</span>
+            <span class="bval" id="costs-preview">£3,100</span>
+          </div>
+
+          <div class="step-nav">
+            <button class="btn-back" onclick="go(1,0)">← Back</button>
+            <button class="btn-next" onclick="go(1,2)">Next: Your Time →</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="panel" id="panel-2">
+          <div class="panel-title">Step 3 — Your Billable Time</div>
+
+          <div class="g2">
+            <div class="field">
+              <label>Holiday days / year</label>
+              <input type="number" id="hol-days" value="28" min="0" max="60" oninput="updateCallout()">
+              <span class="hint">UK statutory minimum is 28 days (inc. bank holidays)</span>
+            </div>
+            <div class="field">
+              <label>Sick days (estimate)</label>
+              <input type="number" id="sick-days" value="7" min="0" max="30" oninput="updateCallout()">
+              <span class="hint">UK average is ~7 days per year</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Non-billable days per week</label>
+            <div class="rng-wrap">
+              <div class="rng-head">
+                <span class="rng-lbl">Days on admin, proposals &amp; biz dev</span>
+                <span class="rng-val" id="nb-disp">1 day</span>
+              </div>
+              <input type="range" id="nb-days" min="0" max="3" step="0.5" value="1" oninput="syncR(this,'nb-disp',' day');updateCallout()">
+              <div class="rng-ticks"><span>0 (fully booked)</span><span>1 (typical)</span><span>3 (new)</span></div>
+            </div>
+            <span class="hint">Every non-billable day per week = ~50 days/year not earning</span>
+          </div>
+
+          <div class="callout green" id="days-callout"></div>
+
+          <div class="step-nav">
+            <button class="btn-back" onclick="go(2,1)">← Back</button>
+            <button class="btn-next g" onclick="calcAll()">Calculate My Day Rate ✓</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Results -->
+        <div class="panel" id="panel-3">
+          <div class="panel-title">Your True Day Rate</div>
+
+          <div class="res-wrap">
+
+            <div class="magic-box">
+              <div class="magic-lbl">✦ Your Magic Number</div>
+              <div class="magic-rate"><span class="cur">£</span><span id="r-rate">—</span></div>
+              <div class="magic-sub" id="r-sub">minimum day rate</div>
+              <div class="magic-pills">
+                <div class="pill">Hourly: <strong id="r-hr">—</strong></div>
+                <div class="pill">Half-day: <strong id="r-hd">—</strong></div>
+                <div class="pill"><strong id="r-bd">—</strong> billable days/yr</div>
+              </div>
+            </div>
+
+            <div class="bk-ttl">The Reality Check</div>
+
+            <div class="rc-grid">
+              <div class="rc-box acc">
+                <div class="rv" id="r-rhr">—</div>
+                <div class="rl">Real take-home / hour</div>
+              </div>
+              <div class="rc-box grn">
+                <div class="rv" id="r-gross">—</div>
+                <div class="rl">Gross annual turnover needed</div>
+              </div>
+              <div class="rc-box">
+                <div class="rv" id="r-taxamt">—</div>
+                <div class="rl">Tax &amp; NI set aside</div>
+              </div>
+              <div class="rc-box">
+                <div class="rv" id="r-penamt">—</div>
+                <div class="rl">Annual pension</div>
+              </div>
+            </div>
+
+            <div class="equiv-box">
+              <span class="equiv-ico">🏢</span>
+              <div class="equiv-txt" id="r-equiv">—</div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-ttl">Where every £1 of your gross income goes</div>
+              <div class="donut-wrap">
+                <canvas id="donut"></canvas>
+                <div class="donut-ctr"><div class="dv" id="dc-val">—</div><div class="dl">per day</div></div>
+              </div>
+              <div class="leg" id="legend"></div>
+            </div>
+
+            <div class="bk-ttl">Full annual breakdown</div>
+            <div class="bk-list">
+              <div class="brow green"><span class="blbl">Take-home salary</span><span class="bval" id="bk-th">—</span></div>
+              <div class="brow amber"><span class="blbl">Tax &amp; NI buffer</span><span class="bval" id="bk-tx">—</span></div>
+              <div class="brow"><span class="blbl">Pension contribution</span><span class="bval" id="bk-pen">—</span></div>
+              <div class="brow"><span class="blbl">Business costs</span><span class="bval" id="bk-co">—</span></div>
+              <div class="brow red"><span class="blbl"><strong>Total gross income needed</strong></span><span class="bval" id="bk-gr">—</span></div>
+            </div>
+
+            <!-- Send Results -->
+            <div class="email-section">
+              <div class="email-lbl">📧 Email me these results</div>
+              <div class="email-row">
+                <input type="email" class="email-inp" id="email-inp" placeholder="your@email.co.uk">
+                <button class="email-btn" id="email-btn" onclick="sendEmail()">Send</button>
+              </div>
+              <div class="email-st" id="email-st"></div>
+            </div>
+
+            <button class="recalc" onclick="go(3,0)">↺ Start over with different numbers</button>
+
+          </div>
+        </div>
+
+      </div><!-- /calc-body -->
+    </div><!-- /calc-card -->
+  </div><!-- /left col -->
+
+  <!-- Sidebar — sits below calculator on mobile naturally -->
+  <div class="sidebar">
+
+    <div class="info-card">
+      <h3>📊 UK Freelancer Benchmarks</h3>
+      <div class="sg">
+        <div class="sb"><div class="sv">£350</div><div class="sl">Avg. day rate</div></div>
+        <div class="sb"><div class="sv">173</div><div class="sl">Avg. billable days</div></div>
+        <div class="sb"><div class="sv">£3,100</div><div class="sl">Avg. annual costs</div></div>
+        <div class="sb"><div class="sv">28%</div><div class="sl">Typical tax buffer</div></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>🔍 Hidden Costs Freelancers Miss</h3>
+      <ul class="ilist">
+        <li><strong>Both sides of NI</strong> — you pay employee + effectively employer contributions</li>
+        <li><strong>No sick pay</strong> — a week off costs you your full day rate × 5</li>
+        <li><strong>No employer pension</strong> — most employed people get 3–5% on top from their employer</li>
+        <li><strong>Unpaid admin</strong> — proposals, invoicing, chasing, onboarding new clients</li>
+        <li><strong>Gaps between projects</strong> — rarely 100% booked all year long</li>
+        <li><strong>Professional training</strong> — keeping skills sharp costs time and money</li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h3>💡 How to Use Your Number</h3>
+      <ul class="ilist">
+        <li>This is your <strong>floor rate</strong> — never accept less</li>
+        <li>Check market rates on LinkedIn, Glassdoor &amp; recruiter listings</li>
+        <li>Add <strong>15–20%</strong> as your opening ask — negotiation is expected</li>
+        <li>Raise your rate <strong>every 12 months</strong> — inflation erodes it silently</li>
+        <li>Niche specialists can charge <strong>2–3× the generalist rate</strong></li>
+      </ul>
+    </div>
+
+    <!-- Waitlist CTA -->
+    <div class="cta-card">
+      <span class="cta-tag">Coming Soon from Billion Studio</span>
+      <h3>Get paid on time, every time</h3>
+      <p>Billdocket helps UK freelancers send professional invoices with automatic payment reminders — spend less time chasing, more time billing.</p>
+      <div class="wl-form">
+        <input type="email" class="wl-inp" id="wl-email" placeholder="your@email.co.uk">
+        <button class="wl-btn" id="wl-btn" onclick="joinWaitlist()">Join the Waitlist →</button>
+        <div class="wl-st" id="wl-st"></div>
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /main -->
+
+<div class="disclaimer">
+  <p>⚠️ <strong>Disclaimer:</strong> This calculator provides estimates for guidance only. The tax buffer is a saving target, not a precise tax calculation — your actual liability depends on your individual circumstances, allowable expenses, and other income sources. Always consult a qualified accountant. This tool does not constitute financial or tax advice.</p>
+</div>
+
+<footer class="site-footer">
+  <p>Built with ♥ by <a href="https://billionstudio.co.uk">Billion Studio</a> · Free Tools for UK Freelancers · <a href="https://billionstudio.co.uk/free-tools">See all free tools</a></p>
+</footer>
+
+<script>
+  // ─────────────────────────────────────────────────────
+  // State
+  // ─────────────────────────────────────────────────────
+  let currentStep = 0;
+  let donutChart  = null;
+  let lastResults = {}; // store calculated values for email
+
+  // ─────────────────────────────────────────────────────
+  // Range sliders
+  // ─────────────────────────────────────────────────────
+  function syncR(inp, dispId, suffix) {
+    document.getElementById(dispId).textContent = parseFloat(inp.value) + suffix;
+    setGrad(inp);
+  }
+  function setGrad(inp) {
+    const pct = ((inp.value - inp.min) / (inp.max - inp.min)) * 100;
+    inp.style.setProperty('--v', pct + '%');
+  }
+  document.querySelectorAll('input[type="range"]').forEach(setGrad);
+
+  // ─────────────────────────────────────────────────────
+  // Costs preview
+  // ─────────────────────────────────────────────────────
+  const EXP_IDS = ['exp-ins','exp-sw','exp-acc','exp-mkt','exp-ws','exp-oth'];
+  EXP_IDS.forEach(id => document.getElementById(id).addEventListener('input', refreshCosts));
+  function getTotalCosts() {
+    return EXP_IDS.reduce((s, id) => s + (parseFloat(document.getElementById(id).value) || 0), 0);
+  }
+  function refreshCosts() {
+    document.getElementById('costs-preview').textContent = fmt(getTotalCosts());
+  }
+
+  // ─────────────────────────────────────────────────────
+  // Days callout
+  // ─────────────────────────────────────────────────────
+  function updateCallout() {
+    const { billable, totalOff, nbAnnual } = getDays();
+    document.getElementById('days-callout').innerHTML =
+      `📅 <strong>261</strong> working days − <strong>${totalOff}</strong> holiday/sick − <strong>${nbAnnual}</strong> admin days = <strong>${billable} billable days/year</strong>`;
+  }
+  function getDays() {
+    const hol      = parseInt(document.getElementById('hol-days').value)  || 28;
+    const sick     = parseInt(document.getElementById('sick-days').value)  || 7;
+    const nbPW     = parseFloat(document.getElementById('nb-days').value) || 1;
+    const nbAnnual = Math.round(nbPW * 52);
+    const totalOff = hol + sick;
+    const billable = Math.max(1, 261 - totalOff - nbAnnual);
+    return { billable, totalOff, nbAnnual };
+  }
+
+  // ─────────────────────────────────────────────────────
+  // Step navigation
+  // ─────────────────────────────────────────────────────
+  function go(from, to) {
+    if (to > from && !validate(from)) return;
+    currentStep = to;
+    document.querySelectorAll('.panel').forEach((p, i) => p.classList.toggle('active', i === to));
+    document.querySelectorAll('.step-tab').forEach((t, i) => {
+      t.classList.remove('active', 'done');
+      if (i < to) t.classList.add('done');
+      if (i === to) t.classList.add('active');
+    });
+    if (to === 1) refreshCosts();
+    if (to === 2) updateCallout();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function validate(step) {
+    if (step === 0) {
+      const s = parseFloat(document.getElementById('salary-target').value);
+      if (!s || s < 1000) { alert('Please enter a realistic take-home salary (e.g. £30,000).'); return false; }
+    }
+    return true;
+  }
+
+  // ─────────────────────────────────────────────────────
+  // Format helpers
+  // ─────────────────────────────────────────────────────
+  const fmt  = n => '£' + Math.round(n).toLocaleString('en-GB');
+  const fmtK = n => n >= 1000 ? '£' + (Math.round(n / 100) / 10).toFixed(0) + 'k' : fmt(n);
+
+  // ─────────────────────────────────────────────────────
+  // Main calculation
+  // ─────────────────────────────────────────────────────
+  function calcAll() {
+    const th     = parseFloat(document.getElementById('salary-target').value) || 0;
+    const penPct = parseFloat(document.getElementById('pension-pct').value) / 100;
+    const taxPct = parseFloat(document.getElementById('tax-buf').value) / 100;
+    const costs  = getTotalCosts();
+    const { billable } = getDays();
+
+    if (!th || billable < 1) { alert('Please complete all steps before calculating.'); return; }
+
+    // gross × (1 − taxPct − penPct) − costs = th
+    // → gross = (th + costs) / (1 − taxPct − penPct)
+    const gross   = (th + costs) / (1 - taxPct - penPct);
+    const taxAmt  = gross * taxPct;
+    const penAmt  = gross * penPct;
+    const dayRate = Math.ceil(gross / billable);
+    const hourly  = Math.ceil(dayRate / 8);
+    const halfDay = Math.ceil(dayRate * 0.6);
+    const realHr  = Math.floor(th / (billable * 8));
+    const empGross = th < 35000 ? Math.round(th / 0.72) : Math.round(th / 0.65);
+
+    // Store for email
+    lastResults = { th, taxAmt, penAmt, costs, gross, dayRate, hourly, halfDay, realHr, billable, empGross, penPct, taxPct };
+
+    // Populate DOM
+    document.getElementById('r-rate').textContent  = Math.round(dayRate).toLocaleString('en-GB');
+    document.getElementById('r-sub').textContent   = `per billable day · ${billable} days/year`;
+    document.getElementById('r-hr').textContent    = fmt(hourly) + '/hr';
+    document.getElementById('r-hd').textContent    = fmt(halfDay);
+    document.getElementById('r-bd').textContent    = billable;
+    document.getElementById('r-rhr').textContent   = fmt(realHr);
+    document.getElementById('r-gross').textContent = fmtK(gross);
+    document.getElementById('r-taxamt').textContent= fmtK(taxAmt);
+    document.getElementById('r-penamt').textContent= fmtK(penAmt);
+
+    document.getElementById('r-equiv').innerHTML =
+      `At this day rate your gross annual turnover would be <strong>${fmt(gross)}</strong>. ` +
+      `For context, to take home the same <strong>${fmt(th)}/year</strong> as a salaried employee, ` +
+      `you'd need a job paying around <strong>${fmt(empGross)}/year</strong> — and your employer ` +
+      `would cover pension contributions and both sides of National Insurance on top.`;
+
+    document.getElementById('bk-th').textContent  = fmt(th);
+    document.getElementById('bk-tx').textContent  = fmt(taxAmt);
+    document.getElementById('bk-pen').textContent = fmt(penAmt);
+    document.getElementById('bk-co').textContent  = fmt(costs);
+    document.getElementById('bk-gr').textContent  = fmt(gross);
+    document.getElementById('dc-val').textContent = fmt(dayRate);
+
+    renderDonut(th, taxAmt, penAmt, costs);
+    go(2, 3);
+  }
+
+  // ─────────────────────────────────────────────────────
+  // Donut chart
+  // ─────────────────────────────────────────────────────
+  function renderDonut(th, tax, pen, costs) {
+    const slices = [
+      { label: 'Take-home salary', value: th,    color: '#1a7a4a' },
+      { label: 'Tax & NI buffer',  value: tax,   color: '#b87a1a' },
+      { label: 'Pension',          value: pen,   color: '#2563eb' },
+      { label: 'Business costs',   value: costs, color: '#c84b2f' },
+    ].filter(s => s.value > 0);
+
+    const total = slices.reduce((s, d) => s + d.value, 0);
+    const ctx   = document.getElementById('donut').getContext('2d');
+    if (donutChart) donutChart.destroy();
+    donutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: slices.map(s => s.label),
+        datasets: [{
+          data: slices.map(s => s.value),
+          backgroundColor: slices.map(s => s.color),
+          borderWidth: 0, hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '68%',
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${fmt(ctx.raw)} (${Math.round(ctx.raw / total * 100)}%)` } }
+        }
+      }
+    });
+
+    document.getElementById('legend').innerHTML = slices.map(s =>
+      `<div class="leg-row">
+        <div class="leg-dot" style="background:${s.color}"></div>
+        <span>${s.label}</span>
+        <strong>${fmt(s.value)} (${Math.round(s.value / total * 100)}%)</strong>
+       </div>`
+    ).join('');
+  }
+
+  // ─────────────────────────────────────────────────────
+  // Send Results  →  POST /api/send-day-rate-email
+  // Field names match api/send-day-rate-email.js exactly
+  // ─────────────────────────────────────────────────────
+  async function sendEmail() {
+    const emailEl  = document.getElementById('email-inp');
+    const statusEl = document.getElementById('email-st');
+    const btn      = document.getElementById('email-btn');
+    const email    = emailEl.value.trim();
+
+    if (!email || !email.includes('@')) {
+      statusEl.style.color = 'var(--accent)';
+      statusEl.textContent = '⚠ Please enter a valid email address.';
+      return;
+    }
+
+    const r = lastResults;
+
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div>';
+    statusEl.style.color = 'var(--ink-soft)';
+    statusEl.textContent = 'Sending…';
+
+    try {
+      const res = await fetch('/api/send-day-rate-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to_email:     email,
+          day_rate:     fmt(r.dayRate),
+          hourly:       fmt(r.hourly),
+          half_day:     fmt(r.halfDay),
+          billable_days: r.billable,
+          real_hourly:  fmt(r.realHr),
+          gross:        fmt(r.gross),
+          take_home:    fmt(r.th),
+          tax_buffer:   fmt(r.taxAmt),
+          pension:      fmt(r.penAmt),
+          costs:        fmt(r.costs),
+          emp_equiv:    fmt(r.empGross),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        statusEl.style.color = 'var(--green)';
+        statusEl.textContent = '✓ Results sent — check your inbox!';
+        emailEl.value = '';
+      } else {
+        throw new Error(data.error || 'Server error');
+      }
+    } catch (e) {
+      statusEl.style.color = 'var(--accent)';
+      statusEl.textContent = '⚠ Failed to send. Please try again.';
+      console.error('send-day-rate-email error:', e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send';
+      setTimeout(() => statusEl.textContent = '', 6000);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────
+  // Waitlist  →  POST /api/waitlist
+  // Field names match existing api/waitlist.js exactly:
+  // { email, source }  →  notifies hello@billionstudio.co.uk
+  // ─────────────────────────────────────────────────────
+  async function joinWaitlist() {
+    const emailEl  = document.getElementById('wl-email');
+    const statusEl = document.getElementById('wl-st');
+    const btn      = document.getElementById('wl-btn');
+    const email    = emailEl.value.trim();
+
+    if (!email || !email.includes('@')) {
+      statusEl.style.color = '#f0c060';
+      statusEl.textContent = '⚠ Please enter a valid email address.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner dark"></div>';
+    statusEl.style.color = 'rgba(255,255,255,0.55)';
+    statusEl.textContent = 'Adding you to the list…';
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          source: 'Day Rate Calculator — Billdocket waitlist CTA',
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        statusEl.style.color = '#9bf0c0';
+        statusEl.textContent = "✓ You're on the list! We'll be in touch.";
+        emailEl.value = '';
+      } else {
+        throw new Error(data.error || 'Server error');
+      }
+    } catch (e) {
+      statusEl.style.color = '#f0c060';
+      statusEl.textContent = '⚠ Something went wrong. Please try again.';
+      console.error('waitlist error:', e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Join the Waitlist →';
+      setTimeout(() => statusEl.textContent = '', 6000);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────
+  // Init
+  // ─────────────────────────────────────────────────────
+  refreshCosts();
+  updateCallout();
+</script>
+</body>
+</html>
