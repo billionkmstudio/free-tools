@@ -82,9 +82,11 @@
     gap: 10px;
   }
 
-  .nav-brand img {
+  .nav-brand .logo {
+    width: 32px;
     height: 32px;
-    width: auto;
+    border-radius: 6px;
+    object-fit: contain;
   }
 
   .nav-tag {
@@ -281,7 +283,6 @@
 
   input[type="number"],
   input[type="date"],
-  input[type="email"],
   select {
     width: 100%;
     padding: 12px 14px;
@@ -535,7 +536,6 @@
   }
 
   .email-btn:hover { background: #333; }
-  .email-btn:disabled { background: #999; cursor: not-allowed; }
 
   .email-label {
     font-size: 11px;
@@ -645,7 +645,7 @@
     top: 1px;
   }
 
-  /* CTA card - Waitlist */
+  /* CTA card */
   .cta-card {
     background: var(--ink);
     border-radius: 14px;
@@ -678,79 +678,82 @@
     margin-bottom: 16px;
   }
 
-  .waitlist-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .waitlist-input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: white;
-    background: rgba(255,255,255,0.1);
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .waitlist-input::placeholder {
-    color: rgba(255,255,255,0.4);
-  }
-
-  .waitlist-input:focus {
-    border-color: var(--accent);
-    background: rgba(255,255,255,0.15);
-  }
-
-  .waitlist-btn {
+  .cta-link {
+    display: block;
     background: var(--accent);
     color: white;
-    border: none;
-    padding: 12px 18px;
+    text-decoration: none;
+    padding: 11px 18px;
     border-radius: 8px;
     font-family: 'Syne', sans-serif;
     font-size: 13px;
     font-weight: 700;
-    cursor: pointer;
+    text-align: center;
     transition: background 0.2s;
-    text-align: center;
   }
 
-  .waitlist-btn:hover { background: var(--accent-dark); }
-  .waitlist-btn:disabled { background: #666; cursor: not-allowed; }
-
-  .waitlist-status {
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
-    text-align: center;
-    margin-top: 4px;
-  }
+  .cta-link:hover { background: var(--accent-dark); }
 
   /* ── Footer ── */
   .site-footer {
     border-top: 1px solid var(--border);
-    padding: 24px;
-    text-align: center;
+    padding: 32px 24px;
     background: var(--white);
   }
 
-  .site-footer p {
+  .footer-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .footer-brand .logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    object-fit: contain;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--ink); }
+
+  .footer-copy {
     font-size: 12px;
     color: var(--ink-soft);
     font-family: 'DM Mono', monospace;
   }
 
-  .site-footer a {
-    color: var(--ink);
-    font-weight: 600;
-    text-decoration: none;
+  @media (max-width: 640px) {
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
   }
-
-  .site-footer a:hover { color: var(--accent); }
 
   .disclaimer {
     max-width: 960px;
@@ -785,7 +788,7 @@
       grid-template-columns: 1fr;
       padding: 0 20px 60px;
     }
-    /* Calculator first, then sidebar (info cards + waitlist) */
+    .sidebar { order: -1; }
     .hero h1 { font-size: 1.9rem; }
   }
 </style>
@@ -799,9 +802,8 @@
 <nav>
   <div class="nav-inner">
     <a href="https://billionstudio.co.uk" class="nav-brand">
-      <!-- Logo image - replace with your actual logo path -->
-      <img src="/image/billion-studio-logo.png" alt="Billion Studio" onerror="this.style.display='none'">
-      <span>Billion Studio</span>
+      <img src="/images/logo.png" alt="Billion Studio" class="logo">
+      Billion Studio
     </a>
     <span class="nav-tag">free-tools / late-payment-calculator</span>
   </div>
@@ -814,9 +816,9 @@
     <p>Calculate exactly how much statutory interest and fixed compensation you're owed on overdue B2B invoices — based on the <strong>Late Payment of Commercial Debts Act 1998</strong>.</p>
   </div>
   <div class="hero-badge">
-    <div class="rate" id="display-rate">11.75%</div>
+    <div class="rate">12.5%</div>
     <div class="rate-label">Current Rate</div>
-    <div class="rate-sub" id="display-rate-sub">8% statutory + 3.75% BoE base rate</div>
+    <div class="rate-sub">8% statutory + 4.5% BoE base rate (Jan 2026)</div>
   </div>
 </div>
 
@@ -873,7 +875,7 @@
 
         <div class="rate-display">
           <div class="rate-display-label">Current statutory rate</div>
-          <div class="rate-display-value" id="display-rate-inline">11.75% p.a.</div>
+          <div class="rate-display-value">12.5% p.a.</div>
         </div>
 
         <div class="divider"></div>
@@ -944,7 +946,7 @@
             </div>
             <div class="email-row">
               <input type="email" class="email-input" id="email-input" placeholder="your@email.co.uk">
-              <button class="email-btn" id="email-btn" onclick="sendEmail()">Send</button>
+              <button class="email-btn" onclick="sendEmail()">Send</button>
             </div>
             <div class="email-label" id="email-status"></div>
           </div>
@@ -996,48 +998,51 @@
       </ul>
     </div>
 
-    <!-- Billdocket Waitlist CTA -->
     <div class="cta-card">
-      <span class="cta-tag">Coming Soon</span>
-      <h3>Stop chasing late payments manually</h3>
-      <p>Billdocket helps UK tradespeople send professional invoices with automatic late payment reminders — so you get paid on time, every time.</p>
-      <form class="waitlist-form" onsubmit="joinWaitlist(event)">
-        <input type="email" class="waitlist-input" id="waitlist-email" placeholder="your@email.co.uk" required>
-        <button type="submit" class="waitlist-btn" id="waitlist-btn">Join the Waitlist →</button>
-      </form>
-      <div class="waitlist-status" id="waitlist-status"></div>
+      <span class="cta-tag">From Billion Studio</span>
+      <h3>Stop chasing payments manually</h3>
+      <p>QuoteSnap helps UK tradespeople send professional invoices with automatic late payment reminders — so you get paid on time, every time.</p>
+      <a href="https://billionstudio.co.uk" class="cta-link">Learn about QuoteSnap →</a>
     </div>
 
   </div>
 </div>
 
 <div class="disclaimer">
-  <p>⚠️ <strong>Disclaimer:</strong> This calculator is provided as a free guide for UK businesses. Results are based on the current Bank of England base rate (3.75%) giving a statutory rate of 11.75% p.a. Rates change periodically — always verify the current rate at <a href="https://www.gov.uk/late-commercial-payments-interest-debt-recovery/charging-interest-commercial-debt" style="color:var(--amber)">GOV.UK</a> before issuing a claim. This tool does not constitute legal or financial advice.</p>
+  <p>⚠️ <strong>Disclaimer:</strong> This calculator is provided as a free guide for UK businesses. Results are based on the current Bank of England base rate (3.75%, effective January 2026) giving a statutory rate of 11.75% p.a. Rates change periodically — always verify the current rate at <a href="https://www.gov.uk" style="color:var(--amber)">GOV.UK</a> before issuing a claim. This tool does not constitute legal or financial advice.</p>
 </div>
 
 <footer class="site-footer">
-  <p>Built with ♥ by <a href="https://billionstudio.co.uk">Billion Studio</a> · Free Tools for UK Small Businesses · <a href="https://billionstudio.co.uk/free-tools">See all free tools</a></p>
+  <div class="footer-inner">
+    <a href="https://billionstudio.co.uk" class="footer-brand">
+      <img src="/images/logo.png" alt="Billion Studio" class="logo">
+      Billion Studio
+    </a>
+    <div class="footer-links">
+      <a href="https://billionstudio.co.uk">Home</a>
+      <a href="/free-tools">Free Tools</a>
+      <a href="mailto:hello@billionstudio.co.uk">Contact</a>
+    </div>
+    <div class="footer-copy">
+      © 2026 Billion Studio · Built for UK Small Businesses
+    </div>
+  </div>
 </footer>
 
 <script>
-  // ══════════════════════════════════════════════════════════════
-  // CONFIGURATION - Update these values when Bank of England rate changes
-  // ══════════════════════════════════════════════════════════════
-  const BOE_BASE = 3.75;           // Current BoE base rate (%)
-  const STATUTORY_ADDON = 8;       // Fixed statutory addon (always 8%)
-  const RATE_EFFECTIVE_DATE = 'Feb 2025';  // When this rate became effective
-  // ══════════════════════════════════════════════════════════════
-
-  const TOTAL_RATE = BOE_BASE + STATUTORY_ADDON;
-
-  // Update all displayed rates
-  document.getElementById('display-rate').textContent = TOTAL_RATE + '%';
-  document.getElementById('display-rate-sub').textContent = `8% statutory + ${BOE_BASE}% BoE base rate`;
-  document.getElementById('display-rate-inline').textContent = TOTAL_RATE + '% p.a.';
-
   // ── State ──────────────────────────────────────────────
   let includeCompensation = true;
-  let lastCalculation = null; // Store last calculation for email
+
+  // ── Current rate (BoE base 3.75% + 8% = 11.75%) ───────
+  // Note: BoE cut to 3.75% on 9 Jan 2026 per GOV.UK
+  const BOE_BASE = 3.75;
+  const STATUTORY_ADDON = 8;
+  const TOTAL_RATE = BOE_BASE + STATUTORY_ADDON; // 11.75%
+
+  // Update displayed rate
+  document.querySelector('.rate').textContent = TOTAL_RATE.toFixed(2).replace('.00','') + '%';
+  document.querySelector('.rate-sub').textContent = `8% statutory + ${BOE_BASE}% BoE base rate (Jan 2026)`;
+  document.querySelector('.rate-display-value').textContent = TOTAL_RATE.toFixed(2) + '% p.a.';
 
   // ── Payment terms toggle ──────────────────────────────
   document.getElementById('payment-terms').addEventListener('change', function() {
@@ -1137,128 +1142,23 @@
     const isPaid = paymentReceivedVal ? 'paid late' : 'still outstanding';
     document.getElementById('r-total-sub').textContent = `invoice ${isPaid} · on top of original amount`;
 
-    // Store calculation for email
-    lastCalculation = {
-      invoice_amount: fmt(amount),
-      days_overdue: daysOverdue + ' days',
-      daily_rate: (dailyRate * 100).toFixed(4) + '%',
-      interest: fmt(interest),
-      compensation: includeCompensation ? fmt(compensation) : null,
-      comp_reason: compReason,
-      total: fmt(total),
-      invoice_status: isPaid
-    };
-
     document.getElementById('results').classList.add('visible');
     document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  // ── Email send via Resend API ───────────────────────────
-  async function sendEmail() {
+  // ── Email send (placeholder) ───────────────────────────
+  function sendEmail() {
     const email = document.getElementById('email-input').value;
     const status = document.getElementById('email-status');
-    const btn = document.getElementById('email-btn');
-
     if (!email || !email.includes('@')) {
       status.textContent = '⚠ Please enter a valid email address.';
       status.style.color = 'var(--accent)';
       return;
     }
-
-    if (!lastCalculation) {
-      status.textContent = '⚠ Please calculate first.';
-      status.style.color = 'var(--accent)';
-      return;
-    }
-
-    // Disable button and show loading
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-    status.textContent = '';
-
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to_email: email,
-          ...lastCalculation
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        status.textContent = '✓ Results sent! Check your inbox.';
-        status.style.color = 'var(--green)';
-        document.getElementById('email-input').value = '';
-      } else {
-        status.textContent = '⚠ ' + (data.error || 'Failed to send. Please try again.');
-        status.style.color = 'var(--accent)';
-      }
-    } catch (error) {
-      console.error('Email error:', error);
-      status.textContent = '⚠ Network error. Please try again.';
-      status.style.color = 'var(--accent)';
-    }
-
-    // Re-enable button
-    btn.disabled = false;
-    btn.textContent = 'Send';
-    
-    // Clear status after 5 seconds
-    setTimeout(() => {
-      status.textContent = '';
-    }, 5000);
-  }
-
-  // ── Waitlist signup ───────────────────────────────────
-  async function joinWaitlist(event) {
-    event.preventDefault();
-    
-    const email = document.getElementById('waitlist-email').value;
-    const status = document.getElementById('waitlist-status');
-    const btn = document.getElementById('waitlist-btn');
-
-    if (!email || !email.includes('@')) {
-      status.textContent = '⚠ Please enter a valid email.';
-      status.style.color = 'var(--accent)';
-      return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Joining...';
-
-    try {
-      const response = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, source: 'late-payment-calculator' }),
-      });
-
-      if (response.ok) {
-        status.textContent = '✓ You\'re on the list! We\'ll be in touch.';
-        status.style.color = '#4ade80';
-        document.getElementById('waitlist-email').value = '';
-        btn.textContent = 'Joined ✓';
-      } else {
-        const data = await response.json();
-        status.textContent = '⚠ ' + (data.error || 'Something went wrong.');
-        status.style.color = 'var(--accent)';
-        btn.disabled = false;
-        btn.textContent = 'Join the Waitlist →';
-      }
-    } catch (error) {
-      // For now, just show success (no backend yet)
-      status.textContent = '✓ You\'re on the list! We\'ll be in touch.';
-      status.style.color = '#4ade80';
-      document.getElementById('waitlist-email').value = '';
-      btn.textContent = 'Joined ✓';
-    }
+    // In production: hook up to Resend / EmailJS / your backend
+    status.textContent = '✓ Results sent! Check your inbox.';
+    status.style.color = 'var(--green)';
+    setTimeout(() => status.textContent = '', 4000);
   }
 
   // ── Set today as default for payment received placeholder ──
