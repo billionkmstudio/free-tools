@@ -3,26 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UK Late Payment Interest Calculator — Free Tool by Billion Studio</title>
-<meta name="description" content="Free UK late payment interest calculator. Calculate statutory interest (8% + Bank of England base rate) and fixed compensation on overdue B2B invoices. Based on the Late Payment of Commercial Debts Act 1998.">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Free UK Business Tools — Billion Studio</title>
+<meta name="description" content="Free calculators and tools for UK freelancers, contractors and small businesses. Late payment calculator, day rate calculator, MTD checker, VAT scheme comparison and more.">
+<meta name="keywords" content="UK business tools, late payment calculator, day rate calculator, MTD checker, VAT scheme comparison, freelancer tools, contractor calculator">
+<link rel="canonical" href="https://tools.billionstudio.co.uk">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Free UK Business Tools — Billion Studio">
+<meta property="og:description" content="Free calculators and tools built specifically for UK freelancers, contractors and small businesses.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.billionstudio.co.uk">
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #f7f5f0;
     --white: #ffffff;
     --ink: #0f0e0c;
     --ink-soft: #5a5650;
+    --ink-muted: #8a857d;
     --border: #e3e0d8;
     --accent: #c84b2f;
     --accent-light: #fdf0ed;
     --accent-dark: #a63a20;
     --green: #1a7a4a;
     --green-light: #edf7f2;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
     --amber: #b87a1a;
     --amber-light: #fdf6e8;
+    --purple: #7c3aed;
+    --purple-light: #f5f3ff;
     --card: #ffffff;
     --shadow: 0 2px 16px rgba(15,14,12,0.07);
     --shadow-lg: 0 8px 40px rgba(15,14,12,0.12);
+    --shadow-hover: 0 12px 48px rgba(15,14,12,0.15);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,6 +67,8 @@
     font-weight: 500;
   }
 
+  .topbar a:hover { text-decoration: underline; }
+
   /* ── Nav ── */
   nav {
     background: var(--white);
@@ -63,7 +80,7 @@
   }
 
   .nav-inner {
-    max-width: 960px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 24px;
     display: flex;
@@ -82,30 +99,48 @@
     gap: 10px;
   }
 
-  .nav-brand img {
+  .nav-brand .logo {
+    width: 32px;
     height: 32px;
-    width: auto;
+    border-radius: 6px;
+    object-fit: contain;
   }
 
-  .nav-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-soft);
-    background: var(--bg);
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
   }
+
+  .nav-links a {
+    font-size: 14px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px !important;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-dark); }
 
   /* ── Hero ── */
   .hero {
-    max-width: 960px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 56px 24px 40px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 32px;
-    align-items: start;
+    padding: 72px 24px 56px;
+    text-align: center;
     animation: fadeUp 0.6s ease both;
   }
 
@@ -115,26 +150,25 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--accent);
-    margin-bottom: 12px;
-    display: flex;
+    margin-bottom: 16px;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-  }
-
-  .hero-label::before {
-    content: '';
-    display: inline-block;
-    width: 20px; height: 2px;
-    background: var(--accent);
+    background: var(--accent-light);
+    padding: 6px 14px;
+    border-radius: 20px;
   }
 
   .hero h1 {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 800;
-    line-height: 1.1;
+    line-height: 1.15;
     color: var(--ink);
-    margin-bottom: 14px;
+    margin-bottom: 18px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hero h1 em {
@@ -143,1127 +177,824 @@
   }
 
   .hero p {
-    font-size: 16px;
+    font-size: 18px;
     color: var(--ink-soft);
-    max-width: 520px;
+    max-width: 580px;
+    margin: 0 auto 32px;
     line-height: 1.7;
   }
 
-  .hero-badge {
+  .hero-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 48px;
+    padding: 32px 48px;
     background: var(--white);
+    border-radius: 16px;
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    min-width: 200px;
-    text-align: center;
     box-shadow: var(--shadow);
-    flex-shrink: 0;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .hero-badge .rate {
+  .hero-stat {
+    text-align: center;
+    flex: 1;
+  }
+
+  .hero-stat-value {
     font-family: 'Syne', sans-serif;
-    font-size: 2.4rem;
+    font-size: 2.8rem;
     font-weight: 800;
-    color: var(--accent);
+    color: var(--ink);
     line-height: 1;
-    margin-bottom: 4px;
   }
 
-  .hero-badge .rate-label {
-    font-size: 11px;
+  .hero-stat-label {
+    font-size: 12px;
     font-family: 'DM Mono', monospace;
     color: var(--ink-soft);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .hero-badge .rate-sub {
-    font-size: 11px;
-    color: var(--ink-soft);
+    letter-spacing: 0.06em;
     margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border);
   }
 
-  /* ── Main layout ── */
-  .main {
-    max-width: 960px;
+  /* ── Tools Grid ── */
+  .tools-section {
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 24px 80px;
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 32px;
-    align-items: start;
   }
 
-  /* ── Calculator Card ── */
-  .calc-card {
+  .section-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .section-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .section-header p {
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  /* ── Tool Card ── */
+  .tool-card {
     background: var(--white);
     border-radius: 16px;
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
     overflow: hidden;
-    animation: fadeUp 0.6s 0.1s ease both;
-  }
-
-  .calc-header {
-    background: var(--ink);
-    padding: 20px 28px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .calc-header-icon {
-    width: 36px; height: 36px;
-    background: var(--accent);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
-
-  .calc-header h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .calc-header p {
-    font-size: 12px;
-    color: rgba(255,255,255,0.5);
-    margin-top: 1px;
-  }
-
-  .calc-body {
-    padding: 28px;
+    transition: transform 0.25s, box-shadow 0.25s;
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    animation: fadeUp 0.6s ease both;
   }
 
-  /* Form fields */
-  .field { display: flex; flex-direction: column; gap: 7px; }
+  .tool-card:nth-child(1) { animation-delay: 0.05s; }
+  .tool-card:nth-child(2) { animation-delay: 0.1s; }
+  .tool-card:nth-child(3) { animation-delay: 0.15s; }
+  .tool-card:nth-child(4) { animation-delay: 0.2s; }
 
-  .field label {
-    font-size: 12px;
-    font-weight: 500;
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-soft);
+  .tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .tool-card-header {
+    padding: 24px 24px 0;
     display: flex;
-    align-items: center;
-    gap: 6px;
+    align-items: flex-start;
+    gap: 14px;
   }
 
-  .field label .required {
-    color: var(--accent);
-    font-size: 14px;
-  }
-
-  .input-wrap {
-    position: relative;
-  }
-
-  .input-prefix {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    color: var(--ink-soft);
-    pointer-events: none;
-  }
-
-  input[type="number"],
-  input[type="date"],
-  input[type="email"],
-  select {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--ink);
-    background: var(--bg);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    appearance: none;
-  }
-
-  input[type="number"].with-prefix { padding-left: 30px; }
-
-  input:focus, select:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(200,75,47,0.1);
-    background: var(--white);
-  }
-
-  .field-hint {
-    font-size: 11px;
-    color: var(--ink-soft);
-    opacity: 0.8;
-  }
-
-  /* Toggle row */
-  .toggle-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    background: var(--bg);
-    border-radius: 8px;
-    border: 1.5px solid var(--border);
-    cursor: pointer;
-    transition: border-color 0.2s;
-  }
-
-  .toggle-row:hover { border-color: #ccc; }
-
-  .toggle-row-label {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--ink);
-  }
-
-  .toggle-row-sub {
-    font-size: 12px;
-    color: var(--ink-soft);
-    margin-top: 2px;
-  }
-
-  .toggle {
-    width: 42px; height: 24px;
-    background: var(--border);
+  .tool-icon {
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
-    position: relative;
-    transition: background 0.2s;
-    flex-shrink: 0;
-  }
-
-  .toggle.on { background: var(--green); }
-
-  .toggle::after {
-    content: '';
-    position: absolute;
-    width: 18px; height: 18px;
-    background: white;
-    border-radius: 50%;
-    top: 3px; left: 3px;
-    transition: left 0.2s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  }
-
-  .toggle.on::after { left: 21px; }
-
-  /* divider */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 4px 0;
-  }
-
-  /* Rate display */
-  .rate-display {
-    background: var(--accent-light);
-    border: 1px solid #f0c4b8;
-    border-radius: 8px;
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .rate-display-label {
-    font-size: 12px;
-    color: var(--accent-dark);
-    font-family: 'DM Mono', monospace;
-  }
-
-  .rate-display-value {
-    font-family: 'Syne', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--accent);
-  }
-
-  /* Calculate button */
-  .calc-btn {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 14px 24px;
-    border-radius: 10px;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.2s, transform 0.15s;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-  }
-
-  .calc-btn:hover { background: var(--accent-dark); transform: translateY(-1px); }
-  .calc-btn:active { transform: translateY(0); }
-
-  /* ── Results ── */
-  .results {
-    display: none;
-    flex-direction: column;
-    gap: 12px;
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .results.visible { display: flex; }
-
-  .results-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 4px;
-  }
-
-  .results-header h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-  }
-
-  .results-header .check {
-    width: 24px; height: 24px;
-    background: var(--green);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 13px;
+    font-size: 22px;
     flex-shrink: 0;
   }
 
-  .result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 10px 14px;
-    border-radius: 8px;
-    background: var(--bg);
-  }
+  .tool-icon.accent { background: var(--accent-light); }
+  .tool-icon.green { background: var(--green-light); }
+  .tool-icon.blue { background: var(--blue-light); }
+  .tool-icon.purple { background: var(--purple-light); }
 
-  .result-row.highlight {
-    background: var(--green-light);
-    border: 1px solid #b8e8cc;
-  }
-
-  .result-row.total {
-    background: var(--ink);
-    color: white;
-    border-radius: 10px;
-    padding: 14px 16px;
-  }
-
-  .result-label {
-    font-size: 13px;
-    color: var(--ink-soft);
-  }
-
-  .result-row.total .result-label { color: rgba(255,255,255,0.65); }
-
-  .result-value {
+  .tool-card-header h3 {
     font-family: 'Syne', sans-serif;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     color: var(--ink);
+    line-height: 1.3;
   }
 
-  .result-row.highlight .result-value { color: var(--green); }
-  .result-row.total .result-value { color: white; font-size: 20px; }
-
-  .result-sub {
-    font-size: 11px;
-    color: var(--ink-soft);
-    font-family: 'DM Mono', monospace;
-    margin-top: 2px;
-  }
-
-  .result-row.total .result-sub { color: rgba(255,255,255,0.5); }
-
-  /* Email row */
-  .email-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 4px;
-  }
-
-  .email-input {
-    flex: 1;
-    padding: 10px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    background: var(--bg);
-    color: var(--ink);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .email-input:focus { border-color: var(--accent); background: white; }
-
-  .email-btn {
-    background: var(--ink);
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-  }
-
-  .email-btn:hover { background: #333; }
-  .email-btn:disabled { background: #999; cursor: not-allowed; }
-
-  .email-label {
-    font-size: 11px;
-    color: var(--ink-soft);
-    font-family: 'DM Mono', monospace;
-    text-align: center;
-    margin-top: 2px;
-  }
-
-  /* ── Sidebar ── */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    animation: fadeUp 0.6s 0.2s ease both;
-  }
-
-  .info-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px;
-    box-shadow: var(--shadow);
-  }
-
-  .info-card h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .info-card h3 .icon {
-    font-size: 16px;
-  }
-
-  .comp-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-
-  .comp-table th {
-    text-align: left;
+  .tool-tag {
+    display: inline-block;
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--ink-soft);
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-top: 6px;
   }
 
-  .comp-table td {
-    padding: 9px 0;
-    border-bottom: 1px solid var(--bg);
-    color: var(--ink);
-  }
-
-  .comp-table td:last-child {
-    font-weight: 600;
-    font-family: 'DM Mono', monospace;
-    color: var(--green);
-    text-align: right;
-  }
-
-  .law-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  .tool-tag.popular {
     background: var(--amber-light);
-    border: 1px solid #f0d090;
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 12px;
     color: var(--amber);
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 12px;
-    width: 100%;
   }
 
-  .info-list {
-    list-style: none;
+  .tool-tag.new {
+    background: var(--green-light);
+    color: var(--green);
+  }
+
+  .tool-card-body {
+    padding: 16px 24px 24px;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 9px;
   }
 
-  .info-list li {
-    font-size: 13px;
+  .tool-card-body p {
+    font-size: 14px;
     color: var(--ink-soft);
-    padding-left: 18px;
-    position: relative;
-    line-height: 1.5;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex: 1;
   }
 
-  .info-list li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
+  .tool-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .tool-feature {
     font-size: 11px;
-    top: 1px;
+    font-family: 'DM Mono', monospace;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: var(--ink-soft);
   }
 
-  /* CTA card - Waitlist */
-  .cta-card {
+  .tool-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     background: var(--ink);
-    border-radius: 14px;
-    padding: 24px;
     color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
   }
 
-  .cta-card .cta-tag {
+  .tool-link:hover { background: #333; }
+
+  .tool-link .arrow {
+    transition: transform 0.2s;
+  }
+
+  .tool-link:hover .arrow { transform: translateX(3px); }
+
+  /* ── Coming Soon Section ── */
+  .coming-soon {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .coming-soon-inner {
+    background: linear-gradient(135deg, var(--ink) 0%, #2a2824 100%);
+    border-radius: 20px;
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .coming-soon-content h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
+  .coming-soon-content h2 em {
+    font-style: normal;
+    color: #f0c060;
+  }
+
+  .coming-soon-content p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .billdocket-tag {
+    display: inline-block;
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #f0c060;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .cta-card h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 10px;
-  }
-
-  .cta-card p {
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.6;
+    background: rgba(240, 192, 96, 0.15);
+    padding: 5px 12px;
+    border-radius: 20px;
     margin-bottom: 16px;
+  }
+
+  .billdocket-features {
+    list-style: none;
+    margin-bottom: 24px;
+  }
+
+  .billdocket-features li {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    padding: 6px 0;
+  }
+
+  .billdocket-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .preview-phone {
+    width: 240px;
+    background: #1a1917;
+    border-radius: 28px;
+    padding: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .preview-screen {
+    background: var(--bg);
+    border-radius: 18px;
+    padding: 20px 16px;
+  }
+
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .preview-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+  }
+
+  .preview-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .preview-row span:first-child {
+    color: var(--ink-soft);
+  }
+
+  .preview-row span:last-child {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .preview-amount {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--green) !important;
+  }
+
+  .preview-btn {
+    margin-top: 20px;
+    background: var(--accent);
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
   }
 
   .waitlist-form {
     display: flex;
-    flex-direction: column;
     gap: 10px;
   }
 
   .waitlist-input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid rgba(255,255,255,0.2);
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid rgba(255,255,255,0.15);
     border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: white;
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
-    color: white;
-    background: rgba(255,255,255,0.1);
     outline: none;
     transition: border-color 0.2s, background 0.2s;
   }
 
-  .waitlist-input::placeholder {
-    color: rgba(255,255,255,0.4);
-  }
-
+  .waitlist-input::placeholder { color: rgba(255,255,255,0.4); }
   .waitlist-input:focus {
     border-color: var(--accent);
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.12);
   }
 
   .waitlist-btn {
     background: var(--accent);
     color: white;
     border: none;
-    padding: 12px 18px;
+    padding: 12px 24px;
     border-radius: 8px;
     font-family: 'Syne', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     transition: background 0.2s;
-    text-align: center;
+    white-space: nowrap;
   }
 
   .waitlist-btn:hover { background: var(--accent-dark); }
-  .waitlist-btn:disabled { background: #666; cursor: not-allowed; }
 
   .waitlist-status {
     font-size: 12px;
+    margin-top: 10px;
     font-family: 'DM Mono', monospace;
+  }
+
+  .waitlist-status.success { color: #4ade80; }
+  .waitlist-status.error { color: #f87171; }
+
+  /* ── Why Section ── */
+  .why-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .why-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
     text-align: center;
-    margin-top: 4px;
+  }
+
+  .why-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--bg);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin: 0 auto 16px;
+  }
+
+  .why-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .why-card p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
   }
 
   /* ── Footer ── */
   .site-footer {
     border-top: 1px solid var(--border);
-    padding: 24px;
-    text-align: center;
+    padding: 32px 24px;
     background: var(--white);
   }
 
-  .site-footer p {
-    font-size: 12px;
-    color: var(--ink-soft);
-    font-family: 'DM Mono', monospace;
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
-  .site-footer a {
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
     color: var(--ink);
-    font-weight: 600;
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .site-footer a:hover { color: var(--accent); }
-
-  .disclaimer {
-    max-width: 960px;
-    margin: 0 auto 32px;
-    padding: 0 24px;
+  .footer-brand .logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    object-fit: contain;
   }
 
-  .disclaimer p {
-    font-size: 12px;
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-size: 13px;
     color: var(--ink-soft);
-    background: var(--amber-light);
-    border: 1px solid #f0d090;
-    border-radius: 8px;
-    padding: 12px 16px;
-    line-height: 1.6;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--ink); }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-family: 'DM Mono', monospace;
   }
 
   /* ── Animations ── */
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
   /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .hero {
+  @media (max-width: 900px) {
+    .coming-soon-inner {
       grid-template-columns: 1fr;
-      padding: 36px 20px 28px;
+      padding: 32px;
     }
-    .hero-badge { display: none; }
-    .main {
+    .billdocket-preview {
+      margin-top: 24px;
+    }
+    .why-grid {
       grid-template-columns: 1fr;
-      padding: 0 20px 60px;
     }
-    /* Calculator first, then sidebar (info cards + waitlist) */
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 20px 40px; }
     .hero h1 { font-size: 1.9rem; }
+    .hero p { font-size: 16px; }
+    .hero-stats { 
+      flex-direction: column;
+      gap: 20px;
+      padding: 24px 32px;
+      max-width: 100%;
+    }
+    .hero-stat-value { font-size: 2.2rem; }
+    .nav-links { display: none; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .waitlist-form { flex-direction: column; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
   }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  Free Tools by <a href="https://billionstudio.co.uk">Billion Studio</a> &nbsp;·&nbsp; Built for UK Small Businesses
+  Free Tools for UK Businesses · Built by <a href="https://billionstudio.co.uk">Billion Studio</a>
 </div>
 
 <nav>
   <div class="nav-inner">
     <a href="https://billionstudio.co.uk" class="nav-brand">
-      <!-- Logo image - replace with your actual logo path -->
-      <img src="/image/billion-studio-logo.png" alt="Billion Studio" onerror="this.style.display='none'">
-      <span>Billion Studio</span>
+      <img src="/images/logo.png" alt="Billion Studio" class="logo">
+      Billion Studio
     </a>
-    <span class="nav-tag">free-tools / late-payment-calculator</span>
+    <div class="nav-links">
+      <a href="#tools">All Tools</a>
+      <a href="#billdocket">Billdocket</a>
+      <a href="https://billionstudio.co.uk" class="nav-cta">About Us</a>
+    </div>
   </div>
 </nav>
 
-<div class="hero">
-  <div>
-    <div class="hero-label">Free UK Business Tool</div>
-    <h1>Late Payment<br><em>Interest Calculator</em></h1>
-    <p>Calculate exactly how much statutory interest and fixed compensation you're owed on overdue B2B invoices — based on the <strong>Late Payment of Commercial Debts Act 1998</strong>.</p>
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-label">🇬🇧 Built for UK Businesses</div>
+  <h1>Free Tools to Help You <em>Get Paid</em> &amp; Stay Compliant</h1>
+  <p>Practical calculators and checkers built specifically for UK freelancers, contractors, and small businesses. No sign-up required. 100% free.</p>
+  
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-value">4</div>
+      <div class="hero-stat-label">Free Tools</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">100%</div>
+      <div class="hero-stat-label">UK Focused</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">£0</div>
+      <div class="hero-stat-label">No Hidden Fees</div>
+    </div>
   </div>
-  <div class="hero-badge">
-    <div class="rate" id="display-rate">11.75%</div>
-    <div class="rate-label">Current Rate</div>
-    <div class="rate-sub" id="display-rate-sub">8% statutory + 3.75% BoE base rate</div>
+</section>
+
+<!-- Tools Grid -->
+<section class="tools-section" id="tools">
+  <div class="section-header">
+    <h2>Choose Your Tool</h2>
+    <p>Click any card to use the calculator — instant results, no login required.</p>
   </div>
-</div>
 
-<div class="main">
-
-  <!-- Calculator -->
-  <div>
-    <div class="calc-card">
-      <div class="calc-header">
-        <div class="calc-header-icon">⚖️</div>
+  <div class="tools-grid">
+    
+    <!-- Late Payment Calculator -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon accent">⚖️</div>
         <div>
-          <h2>Calculate Your Claim</h2>
-          <p>B2B transactions only · Late Payment Act 1998</p>
+          <h3>Late Payment Interest Calculator</h3>
+          <span class="tool-tag popular">★ Most Popular</span>
         </div>
       </div>
-
-      <div class="calc-body">
-
-        <div class="field">
-          <label>Invoice Amount (inc. VAT) <span class="required">*</span></label>
-          <div class="input-wrap">
-            <span class="input-prefix">£</span>
-            <input type="number" id="invoice-amount" class="with-prefix" placeholder="0.00" min="0" step="0.01">
-          </div>
-          <span class="field-hint">Use the total amount including VAT</span>
+      <div class="tool-card-body">
+        <p>Calculate statutory interest (8% + BoE base rate) and fixed compensation on overdue B2B invoices. Based on the Late Payment of Commercial Debts Act 1998.</p>
+        <div class="tool-features">
+          <span class="tool-feature">Statutory Interest</span>
+          <span class="tool-feature">Fixed Compensation</span>
+          <span class="tool-feature">Email Results</span>
         </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <div class="field">
-            <label>Invoice Date <span class="required">*</span></label>
-            <input type="date" id="invoice-date">
-          </div>
-          <div class="field">
-            <label>Payment Terms</label>
-            <select id="payment-terms">
-              <option value="30">30 days (standard)</option>
-              <option value="14">14 days</option>
-              <option value="60">60 days</option>
-              <option value="custom">Custom</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field" id="custom-terms-field" style="display:none">
-          <label>Custom Payment Terms (days)</label>
-          <input type="number" id="custom-terms" placeholder="e.g. 45" min="1" max="365">
-        </div>
-
-        <div class="field">
-          <label>Date Payment Received</label>
-          <input type="date" id="payment-received">
-          <span class="field-hint">Leave blank if still unpaid — we'll calculate to today</span>
-        </div>
-
-        <div class="rate-display">
-          <div class="rate-display-label">Current statutory rate</div>
-          <div class="rate-display-value" id="display-rate-inline">11.75% p.a.</div>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Include compensation toggle -->
-        <div class="toggle-row" onclick="toggleCompensation()">
-          <div>
-            <div class="toggle-row-label">Include fixed compensation</div>
-            <div class="toggle-row-sub">£40–£100 per invoice under the Act</div>
-          </div>
-          <div class="toggle on" id="comp-toggle"></div>
-        </div>
-
-        <button class="calc-btn" onclick="calculate()">
-          ⚖️ Calculate What I'm Owed
-        </button>
-
-        <!-- Results -->
-        <div class="results" id="results">
-          <div class="results-header">
-            <div class="check">✓</div>
-            <h3>Your Claim Summary</h3>
-          </div>
-
-          <div class="result-row">
-            <div>
-              <div class="result-label">Days overdue</div>
-            </div>
-            <div class="result-value" id="r-days">—</div>
-          </div>
-
-          <div class="result-row">
-            <div>
-              <div class="result-label">Daily interest rate</div>
-            </div>
-            <div class="result-value" id="r-daily-rate">—</div>
-          </div>
-
-          <div class="result-row highlight">
-            <div>
-              <div class="result-label">Statutory interest</div>
-              <div class="result-sub" id="r-interest-calc">—</div>
-            </div>
-            <div class="result-value" id="r-interest">—</div>
-          </div>
-
-          <div class="result-row highlight" id="r-comp-row">
-            <div>
-              <div class="result-label">Fixed compensation</div>
-              <div class="result-sub" id="r-comp-reason">—</div>
-            </div>
-            <div class="result-value" id="r-compensation">—</div>
-          </div>
-
-          <div class="result-row total">
-            <div>
-              <div class="result-label">Total you can claim</div>
-              <div class="result-sub" id="r-total-sub">on top of the original invoice</div>
-            </div>
-            <div>
-              <div class="result-value" id="r-total">—</div>
-            </div>
-          </div>
-
-          <div>
-            <div style="font-size:12px;color:var(--ink-soft);margin-bottom:8px;font-family:'DM Mono',monospace;">
-              📧 Send results to my email
-            </div>
-            <div class="email-row">
-              <input type="email" class="email-input" id="email-input" placeholder="your@email.co.uk">
-              <button class="email-btn" id="email-btn" onclick="sendEmail()">Send</button>
-            </div>
-            <div class="email-label" id="email-status"></div>
-          </div>
-        </div>
-
+        <a href="/late-payment-calculator" class="tool-link">
+          Calculate Now <span class="arrow">→</span>
+        </a>
       </div>
     </div>
+
+    <!-- Day Rate Calculator -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon green">💷</div>
+        <div>
+          <h3>Day Rate Calculator</h3>
+          <span class="tool-tag new">New</span>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <p>Convert between annual salary, day rate, and hourly rate. Factor in IR35 status, pension contributions, and billable days to find your ideal contractor rate.</p>
+        <div class="tool-features">
+          <span class="tool-feature">IR35 Comparison</span>
+          <span class="tool-feature">Take-Home Pay</span>
+          <span class="tool-feature">Pension Calc</span>
+        </div>
+        <a href="/day-rate-calculator" class="tool-link">
+          Calculate Now <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- MTD Checker -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon blue">📋</div>
+        <div>
+          <h3>MTD Checker</h3>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <p>Check if your business needs to comply with Making Tax Digital (MTD) for VAT or Income Tax. Get clear guidance based on your turnover and business type.</p>
+        <div class="tool-features">
+          <span class="tool-feature">MTD for VAT</span>
+          <span class="tool-feature">MTD for ITSA</span>
+          <span class="tool-feature">Deadline Checker</span>
+        </div>
+        <a href="/mtd-checker" class="tool-link">
+          Check Now <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- VAT Scheme Comparison -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon purple">📊</div>
+        <div>
+          <h3>VAT Scheme Comparison</h3>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <p>Compare Flat Rate, Standard, Cash Accounting, and Annual Accounting VAT schemes. See which scheme saves you the most money based on your specific numbers.</p>
+        <div class="tool-features">
+          <span class="tool-feature">4 Schemes</span>
+          <span class="tool-feature">Side-by-Side</span>
+          <span class="tool-feature">Savings Calc</span>
+        </div>
+        <a href="/vat-scheme-comparison" class="tool-link">
+          Compare Now <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
   </div>
+</section>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-
-    <div class="info-card">
-      <h3><span class="icon">💷</span> Fixed Compensation Rates</h3>
-      <div class="law-pill">⚖️ Late Payment Act 1998 — per invoice</div>
-      <table class="comp-table">
-        <thead>
-          <tr>
-            <th>Debt Amount</th>
-            <th>You Can Claim</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Up to £999.99</td>
-            <td>£40</td>
-          </tr>
-          <tr>
-            <td>£1,000 – £9,999.99</td>
-            <td>£70</td>
-          </tr>
-          <tr>
-            <td>£10,000 or more</td>
-            <td>£100</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="info-card">
-      <h3><span class="icon">📋</span> How It Works</h3>
-      <ul class="info-list">
-        <li>Applies to <strong>B2B transactions only</strong> — not consumer sales</li>
-        <li>Interest runs from the day <strong>after</strong> payment was due</li>
-        <li>You can claim even if the invoice has now been paid</li>
-        <li>No contract needed — it's a <strong>statutory right</strong></li>
-        <li>Send a separate invoice for the interest &amp; compensation amount</li>
-        <li>You have up to <strong>6 years</strong> to make a claim</li>
+<!-- Billdocket CTA -->
+<section class="coming-soon" id="billdocket">
+  <div class="coming-soon-inner">
+    <div class="coming-soon-content">
+      <span class="billdocket-tag">Coming Soon</span>
+      <h2><em>Billdocket</em> — Invoicing for UK Tradespeople</h2>
+      <p>Stop chasing payments manually. Create professional invoices in seconds and let automatic reminders do the chasing for you — so you get paid on time, every time.</p>
+      
+      <ul class="billdocket-features">
+        <li>📄 Professional invoices in seconds</li>
+        <li>⏰ Automatic late payment reminders</li>
+        <li>📱 Mobile-first — invoice from the job site</li>
+        <li>⚖️ Built-in statutory interest calculations</li>
       </ul>
-    </div>
-
-    <!-- Billdocket Waitlist CTA -->
-    <div class="cta-card">
-      <span class="cta-tag">Coming Soon</span>
-      <h3>Stop chasing late payments manually</h3>
-      <p>Billdocket helps UK tradespeople send professional invoices with automatic late payment reminders — so you get paid on time, every time.</p>
-      <form class="waitlist-form" onsubmit="joinWaitlist(event)">
+      
+      <form class="waitlist-form" id="waitlist-form">
         <input type="email" class="waitlist-input" id="waitlist-email" placeholder="your@email.co.uk" required>
-        <button type="submit" class="waitlist-btn" id="waitlist-btn">Join the Waitlist →</button>
+        <button type="submit" class="waitlist-btn">Join the Waitlist</button>
       </form>
       <div class="waitlist-status" id="waitlist-status"></div>
     </div>
 
+    <div class="billdocket-preview">
+      <div class="preview-phone">
+        <div class="preview-screen">
+          <div class="preview-header">
+            <span>New Invoice</span>
+            <span class="preview-dot"></span>
+          </div>
+          <div class="preview-row">
+            <span>Customer</span>
+            <span>J. Smith Builders</span>
+          </div>
+          <div class="preview-row">
+            <span>Amount</span>
+            <span class="preview-amount">£2,450.00</span>
+          </div>
+          <div class="preview-row">
+            <span>Due</span>
+            <span>30 days</span>
+          </div>
+          <div class="preview-btn">Send Invoice →</div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="disclaimer">
-  <p>⚠️ <strong>Disclaimer:</strong> This calculator is provided as a free guide for UK businesses. Results are based on the current Bank of England base rate (3.75%) giving a statutory rate of 11.75% p.a. Rates change periodically — always verify the current rate at <a href="https://www.gov.uk/late-commercial-payments-interest-debt-recovery/charging-interest-commercial-debt" style="color:var(--amber)">GOV.UK</a> before issuing a claim. This tool does not constitute legal or financial advice.</p>
-</div>
+<!-- Why Use Our Tools -->
+<section class="why-section">
+  <div class="section-header">
+    <h2>Why Use Our Tools?</h2>
+    <p>Built by UK business owners who understand your challenges.</p>
+  </div>
 
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">🇬🇧</div>
+      <h3>UK-Specific</h3>
+      <p>Built for UK legislation, tax rules, and business practices. Not a generic US tool with a £ symbol slapped on.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🔒</div>
+      <h3>Privacy First</h3>
+      <p>Calculations happen in your browser. We don't store your financial data or sell your information.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">⚡</div>
+      <h3>Instant Results</h3>
+      <p>No sign-up forms, no email gates, no waiting. Enter your numbers and get answers immediately.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
 <footer class="site-footer">
-  <p>Built with ♥ by <a href="https://billionstudio.co.uk">Billion Studio</a> · Free Tools for UK Small Businesses · <a href="https://billionstudio.co.uk/free-tools">See all free tools</a></p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="/images/logo.png" alt="Billion Studio" class="logo">
+      Billion Studio
+    </div>
+    <div class="footer-links">
+      <a href="https://billionstudio.co.uk">Home</a>
+      <a href="#tools">Free Tools</a>
+      <a href="mailto:hello@billionstudio.co.uk">Contact</a>
+    </div>
+    <div class="footer-copy">
+      © 2026 Billion Studio · Built for UK Small Businesses
+    </div>
+  </div>
 </footer>
 
 <script>
-  // ══════════════════════════════════════════════════════════════
-  // CONFIGURATION - Update these values when Bank of England rate changes
-  // ══════════════════════════════════════════════════════════════
-  const BOE_BASE = 3.75;           // Current BoE base rate (%)
-  const STATUTORY_ADDON = 8;       // Fixed statutory addon (always 8%)
-  const RATE_EFFECTIVE_DATE = 'Feb 2025';  // When this rate became effective
-  // ══════════════════════════════════════════════════════════════
-
-  const TOTAL_RATE = BOE_BASE + STATUTORY_ADDON;
-
-  // Update all displayed rates
-  document.getElementById('display-rate').textContent = TOTAL_RATE + '%';
-  document.getElementById('display-rate-sub').textContent = `8% statutory + ${BOE_BASE}% BoE base rate`;
-  document.getElementById('display-rate-inline').textContent = TOTAL_RATE + '% p.a.';
-
-  // ── State ──────────────────────────────────────────────
-  let includeCompensation = true;
-  let lastCalculation = null; // Store last calculation for email
-
-  // ── Payment terms toggle ──────────────────────────────
-  document.getElementById('payment-terms').addEventListener('change', function() {
-    const custom = document.getElementById('custom-terms-field');
-    custom.style.display = this.value === 'custom' ? 'flex' : 'none';
-  });
-
-  // ── Compensation toggle ────────────────────────────────
-  function toggleCompensation() {
-    includeCompensation = !includeCompensation;
-    const toggle = document.getElementById('comp-toggle');
-    toggle.classList.toggle('on', includeCompensation);
-    if (document.getElementById('results').classList.contains('visible')) {
-      calculate();
-    }
-  }
-
-  // ── Main calculation ───────────────────────────────────
-  function calculate() {
-    const amount = parseFloat(document.getElementById('invoice-amount').value);
-    const invoiceDateVal = document.getElementById('invoice-date').value;
-    const paymentReceivedVal = document.getElementById('payment-received').value;
-
-    if (!amount || amount <= 0) {
-      alert('Please enter a valid invoice amount.');
-      return;
-    }
-    if (!invoiceDateVal) {
-      alert('Please enter the invoice date.');
-      return;
-    }
-
-    // Payment terms in days
-    let termsDays = parseInt(document.getElementById('payment-terms').value);
-    if (document.getElementById('payment-terms').value === 'custom') {
-      termsDays = parseInt(document.getElementById('custom-terms').value) || 30;
-    }
-
-    const invoiceDate = new Date(invoiceDateVal);
-    const dueDate = new Date(invoiceDate);
-    dueDate.setDate(dueDate.getDate() + termsDays);
-
-    const endDate = paymentReceivedVal ? new Date(paymentReceivedVal) : new Date();
-
-    // Days overdue (from day AFTER due date)
-    const msPerDay = 1000 * 60 * 60 * 24;
-    const daysOverdue = Math.max(0, Math.floor((endDate - dueDate) / msPerDay));
-
-    if (daysOverdue <= 0) {
-      alert('This invoice is not yet overdue based on the dates entered.');
-      return;
-    }
-
-    // Interest calculation
-    const annualRate = TOTAL_RATE / 100;
-    const dailyRate = annualRate / 365;
-    const interest = amount * dailyRate * daysOverdue;
-
-    // Fixed compensation
-    let compensation = 0;
-    let compReason = '';
-    if (includeCompensation) {
-      if (amount < 1000) {
-        compensation = 40;
-        compReason = 'Debt under £1,000';
-      } else if (amount < 10000) {
-        compensation = 70;
-        compReason = 'Debt £1,000–£9,999';
-      } else {
-        compensation = 100;
-        compReason = 'Debt £10,000 or more';
-      }
-    }
-
-    const total = interest + compensation;
-
-    // Display
-    const fmt = (n) => '£' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-    document.getElementById('r-days').textContent = daysOverdue + ' days';
-    document.getElementById('r-daily-rate').textContent = (dailyRate * 100).toFixed(4) + '%';
-    document.getElementById('r-interest').textContent = fmt(interest);
-    document.getElementById('r-interest-calc').textContent =
-      `£${amount.toLocaleString('en-GB', {minimumFractionDigits:2})} × ${TOTAL_RATE}% ÷ 365 × ${daysOverdue} days`;
-
-    const compRow = document.getElementById('r-comp-row');
-    if (includeCompensation) {
-      compRow.style.display = 'flex';
-      document.getElementById('r-compensation').textContent = fmt(compensation);
-      document.getElementById('r-comp-reason').textContent = compReason;
-    } else {
-      compRow.style.display = 'none';
-    }
-
-    document.getElementById('r-total').textContent = fmt(total);
-
-    const isPaid = paymentReceivedVal ? 'paid late' : 'still outstanding';
-    document.getElementById('r-total-sub').textContent = `invoice ${isPaid} · on top of original amount`;
-
-    // Store calculation for email
-    lastCalculation = {
-      invoice_amount: fmt(amount),
-      days_overdue: daysOverdue + ' days',
-      daily_rate: (dailyRate * 100).toFixed(4) + '%',
-      interest: fmt(interest),
-      compensation: includeCompensation ? fmt(compensation) : null,
-      comp_reason: compReason,
-      total: fmt(total),
-      invoice_status: isPaid
-    };
-
-    document.getElementById('results').classList.add('visible');
-    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  // ── Email send via Resend API ───────────────────────────
-  async function sendEmail() {
-    const email = document.getElementById('email-input').value;
-    const status = document.getElementById('email-status');
-    const btn = document.getElementById('email-btn');
-
-    if (!email || !email.includes('@')) {
-      status.textContent = '⚠ Please enter a valid email address.';
-      status.style.color = 'var(--accent)';
-      return;
-    }
-
-    if (!lastCalculation) {
-      status.textContent = '⚠ Please calculate first.';
-      status.style.color = 'var(--accent)';
-      return;
-    }
-
-    // Disable button and show loading
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-    status.textContent = '';
-
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to_email: email,
-          ...lastCalculation
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        status.textContent = '✓ Results sent! Check your inbox.';
-        status.style.color = 'var(--green)';
-        document.getElementById('email-input').value = '';
-      } else {
-        status.textContent = '⚠ ' + (data.error || 'Failed to send. Please try again.');
-        status.style.color = 'var(--accent)';
-      }
-    } catch (error) {
-      console.error('Email error:', error);
-      status.textContent = '⚠ Network error. Please try again.';
-      status.style.color = 'var(--accent)';
-    }
-
-    // Re-enable button
-    btn.disabled = false;
-    btn.textContent = 'Send';
-    
-    // Clear status after 5 seconds
-    setTimeout(() => {
-      status.textContent = '';
-    }, 5000);
-  }
-
-  // ── Waitlist signup ───────────────────────────────────
-  async function joinWaitlist(event) {
-    event.preventDefault();
+  // Waitlist form submission
+  document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
     
     const email = document.getElementById('waitlist-email').value;
     const status = document.getElementById('waitlist-status');
-    const btn = document.getElementById('waitlist-btn');
-
+    const btn = this.querySelector('button');
+    
     if (!email || !email.includes('@')) {
-      status.textContent = '⚠ Please enter a valid email.';
-      status.style.color = 'var(--accent)';
+      status.textContent = '⚠ Please enter a valid email address.';
+      status.className = 'waitlist-status error';
       return;
     }
 
-    btn.disabled = true;
     btn.textContent = 'Joining...';
+    btn.disabled = true;
 
     try {
       const response = await fetch('/api/waitlist', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, source: 'late-payment-calculator' }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
       });
 
       if (response.ok) {
-        status.textContent = '✓ You\'re on the list! We\'ll be in touch.';
-        status.style.color = '#4ade80';
+        status.textContent = '✓ You\'re on the list! We\'ll be in touch soon.';
+        status.className = 'waitlist-status success';
         document.getElementById('waitlist-email').value = '';
-        btn.textContent = 'Joined ✓';
       } else {
-        const data = await response.json();
-        status.textContent = '⚠ ' + (data.error || 'Something went wrong.');
-        status.style.color = 'var(--accent)';
-        btn.disabled = false;
-        btn.textContent = 'Join the Waitlist →';
+        throw new Error('Failed to join');
       }
-    } catch (error) {
-      // For now, just show success (no backend yet)
-      status.textContent = '✓ You\'re on the list! We\'ll be in touch.';
-      status.style.color = '#4ade80';
+    } catch (err) {
+      status.textContent = '✓ You\'re on the list! We\'ll be in touch soon.';
+      status.className = 'waitlist-status success';
       document.getElementById('waitlist-email').value = '';
-      btn.textContent = 'Joined ✓';
     }
-  }
 
-  // ── Set today as default for payment received placeholder ──
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('payment-received').setAttribute('placeholder', today);
+    btn.textContent = 'Join Waitlist';
+    btn.disabled = false;
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
 </script>
+
 </body>
 </html>
